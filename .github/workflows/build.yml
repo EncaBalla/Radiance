@@ -1,0 +1,28 @@
+name: Build Radiance
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build Radiance
+        shell: cmd
+        run: call build.bat
+
+      - name: Upload Radiance
+        uses: actions/upload-artifact@v4
+        with:
+          name: Radiance-x64
+          path: build/Release/Radiance.exe
+          if-no-files-found: error
